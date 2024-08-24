@@ -26,7 +26,7 @@ app.post('/send-webhook', async (req, res) => {
 
     try {
         // Send the data to the webhook URL
-        const response = await axios.post('https://your-webhook-url.com', webhookData);
+        const response = await axios.post('https://getonapod.app.n8n.cloud/webhook-test/cb29ccf4-ee82-4f3b-a3d7-7c1ca6373dfc', webhookData);
 
         // Send a response back to the client
         res.json({ message: 'Data sent successfully!' });
