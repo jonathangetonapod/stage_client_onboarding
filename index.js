@@ -18,7 +18,6 @@ app.post('/send-webhook', async (req, res) => {
     const webhookData = {
         clientFullName,
         contactEmail,
-        campaignStartDate,
         linkedInProfile,
         paymentDate
     };
