@@ -69,7 +69,7 @@
 </head>
 <body>
     <form id="webhookForm">
-        <h1>Client Onboarding For Stage Clients</h1>
+        <h1>Client Onboarding</h1>
         
         <label for="clientFullName">Full Name of Client:</label>
         <input type="text" id="clientFullName" name="clientFullName" required>
@@ -81,12 +81,12 @@
         <input type="date" id="campaignStartDate" name="campaignStartDate" required>
 
         <label for="linkedInProfile">LinkedIn Profile:</label>
-        <input type="text" id="linkedInProfile" name="linkedInProfile" required>
+        <input type="url" id="linkedInProfile" name="linkedInProfile" required>
 
         <label for="paymentDate">Date of Payment:</label>
         <input type="date" id="paymentDate" name="paymentDate" required>
 
-        <button type="submit">Submit</button>
+        <button type="submit">Send to Webhook</button>
     </form>
 
     <script>
@@ -110,6 +110,8 @@
             .then(response => response.json())
             .then(data => {
                 alert(data.message);
+                // Refresh the page to clear the form
+                window.location.reload();
             })
             .catch((error) => {
                 alert('Error:', error);
