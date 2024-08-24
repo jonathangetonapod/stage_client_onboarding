@@ -1,34 +1,42 @@
 const express = require('express');
-const axios = require('axios');
+const axios = require('axios'); // We'll use axios to send the data to the webhook
 const bodyParser = require('body-parser');
-const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
+// Middleware to parse JSON bodies
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, 'public')));
 
-// Serve HTML file
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+// Serve the static HTML file
+app.use(express.static('public'));
+
+// Route to handle the form submission
+app.post('/send-webhook', async (req, res) => {
+    const { clientFullName, contactEmail, campaignStartDate, linkedInProfile, paymentDate } = req.body;
+
+    // Construct the data to send to the webhook
+    const webhookData = {
+        clientFullName,
+        contactEmail,
+        campaignStartDate,
+        linkedInProfile,
+        paymentDate
+    };
+
+    try {
+        // Send the data to the webhook URL
+        const response = await axios.post('https://your-webhook-url.com', webhookData);
+
+        // Send a response back to the client
+        res.json({ message: 'Data sent successfully!' });
+    } catch (error) {
+        console.error('Error sending data to webhook:', error);
+        res.status(500).json({ message: 'Error sending data to webhook' });
+    }
 });
 
-// Route to handle webhook submission
-app.post('/send-webhook', (req, res) => {
-    const data = req.body;
-    const webhookUrl = 'YOUR_WEBHOOK_URL'; // Replace with your actual webhook URL
-
-    axios.post(webhookUrl, data)
-        .then(response => {
-            res.status(200).json({ message: 'Webhook sent successfully' });
-        })
-        .catch(error => {
-            res.status(500).json({ message: 'Failed to send webhook' });
-        });
-});
-
+// Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
