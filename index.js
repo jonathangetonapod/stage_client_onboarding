@@ -1,5 +1,5 @@
 const express = require('express');
-const axios = require('axios'); // We'll use axios to send the data to the webhook
+const axios = require('axios');
 const bodyParser = require('body-parser');
 
 const app = express();
@@ -15,7 +15,6 @@ app.use(express.static('public'));
 app.post('/send-webhook', async (req, res) => {
     const { clientFullName, contactEmail, campaignStartDate, linkedInProfile, paymentDate } = req.body;
 
-    // Construct the data to send to the webhook
     const webhookData = {
         clientFullName,
         contactEmail,
@@ -25,13 +24,12 @@ app.post('/send-webhook', async (req, res) => {
     };
 
     try {
-        // Send the data to the webhook URL
+        // Sending data to the provided webhook URL
         const response = await axios.post('https://getonapod.app.n8n.cloud/webhook-test/cb29ccf4-ee82-4f3b-a3d7-7c1ca6373dfc', webhookData);
 
-        // Send a response back to the client
         res.json({ message: 'Data sent successfully!' });
     } catch (error) {
-        console.error('Error sending data to webhook:', error);
+        console.error('Error sending data to webhook:', error.response ? error.response.data : error.message);
         res.status(500).json({ message: 'Error sending data to webhook' });
     }
 });
