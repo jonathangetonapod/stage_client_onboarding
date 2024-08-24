@@ -13,7 +13,7 @@ app.use(express.static('public'));
 
 // Route to handle the form submission
 app.post('/send-webhook', async (req, res) => {
-    const { clientFullName, contactEmail, campaignStartDate, linkedInProfile, paymentDate } = req.body;
+    const { clientFullName, contactEmail, linkedInProfile, paymentDate } = req.body;
 
     const webhookData = {
         clientFullName,
